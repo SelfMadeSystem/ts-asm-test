@@ -1,35 +1,10 @@
-# asm
+import { parse } from './src/parser';
+import * as fs from 'fs';
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To compile the thing:
-
-```bash
-bun run c
-```
-
-To execute the compiled thing:
-
-```bash
-bun run x
-```
-
-Example:
-
-```ts
-import { Environment } from './environment';
-import { Interpreter } from './interpreter';
-import { parse } from './parser';
-
-const env = new Environment();
-const itp = new Interpreter(env);
+const file = 'output.bin';
 
 /* prettier-ignore */
-const bytecode = parse([
+const bytecode: Uint8Array = parse([
   "set", 0, 10, // Set register 0 to 10 (number of lines)
   "set", 1, 42, // Set register 1 to 42 (ASCII code for '*')
   "[loop", // Label the loop
@@ -45,7 +20,4 @@ const bytecode = parse([
   "ret", // Return from the function
 ]);
 
-itp.run(bytecode);
-```
-
-This will output 10 stars separated by spaces.
+fs.writeFileSync(file, bytecode);
