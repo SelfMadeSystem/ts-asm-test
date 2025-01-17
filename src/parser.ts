@@ -17,7 +17,8 @@ export function parse(stuff: Instruction[]): Uint8Array {
     const item = stuff[i];
     if (typeof item === 'string') {
       switch (item[0]) {
-        case '[': {
+        case '[':
+        case '(': { // the two are equivalent
           const label = item.slice(1);
           jumpTable[label] = result.length;
           break;
@@ -27,11 +28,6 @@ export function parse(stuff: Instruction[]): Uint8Array {
           const [label, jmp] = item.slice(1).split(':');
           result.push(getOpcodeFromName(jmp as JumpInstructionName));
           result.push(label);
-          break;
-        }
-        case '(': {
-          const label = item.slice(1);
-          jumpTable[label] = result.length;
           break;
         }
         case ')': {
