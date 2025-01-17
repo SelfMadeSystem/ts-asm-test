@@ -1,20 +1,21 @@
 import { Environment } from './environment';
-import { g } from './instructions';
 import { Interpreter } from './interpreter';
+import { parse } from './parser';
 
 const env = new Environment();
-const parser = new Interpreter(env);
+const itp = new Interpreter(env);
 
-// Example bytecode: [opcode, operand1, operand2, ...]
 /* prettier-ignore */
-const bytecode = new Uint8Array([
-  g('set'), 1, 42, // set r1 to 42
-  g('set'), 2, 100, // set r2 to 100
-  g('add'), 3, 1, 2, // add r1 and r2, store in r3
+const bytecode = parse([
+  "set", 0, 10, // Set register 0 to 10 (number of lines)
+  "set", 1, 42, // Set register 1 to 42 (ASCII code for '*')
+  "[loop", // Label the loop
+  "subv", 0, 0, 1, // Subtract 1 from register 0
+  "asciir", 1, // Output '*'
+  "asciiv", 32, // Output space (ASCII code 32)
+  "cmpv", 0, 0, // Compare register 0 to 0
+  "]loop:jnz", // Jump to loop if comparison was not zero
+  "flush"
 ]);
 
-console.log(bytecode);
-
-parser.run(bytecode);
-
-console.log(env.getRegister(3)); // 142
+itp.run(bytecode);

@@ -8,6 +8,7 @@ export class Environment {
   public pointers: Pointers = new Pointers();
   public flags: Flags = new Flags();
   public memory: Memory = new Memory(1024);
+  public stdoutBuffer: number[] = [];
 
   public get pc(): number {
     return this.pointers.instruction;
@@ -58,5 +59,14 @@ export class Environment {
       process.emitWarning('Returning from empty stack');
     }
     this.pointers.instruction = this.pointers.ret.pop() ?? 0;
+  }
+
+  public log(v: number): void {
+    this.stdoutBuffer.push(v);
+  }
+
+  public flush(): void {
+    console.log(this.stdoutBuffer.map(v => String.fromCharCode(v)).join(''));
+    this.stdoutBuffer = [];
   }
 }

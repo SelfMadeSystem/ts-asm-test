@@ -115,12 +115,31 @@ export const instructions = {
   // Function instructions
   call: ni(1, (env, [p]) => env.call(p)),
   ret: ni(0, env => env.ret()),
+  // Debug instructions
+  logr: ni(1, (env, [r]) => console.log(`Register ${r}:`, env.getRegister(r))),
+  logm: ni(1, (env, [a]) =>
+    console.log('Address:', env.read(env.getRegister(a))),
+  ),
+  asciiv: ni(1, (env, [v]) => env.log(v)),
+  asciir: ni(1, (env, [r]) => env.log(env.getRegister(r))),
+  asciia: ni(1, (env, [a]) => env.log(env.read(env.getRegister(a)))),
+  flush: ni(0, env => env.flush()),
 } as const;
 
-export function g(t: keyof typeof instructions) {
+export type InstructionName = keyof typeof instructions;
+
+export type JumpInstructionName = {
+  [K in InstructionName]: K extends `j${string}` ? K : never;
+}[InstructionName];
+
+export function getOpcodeFromName(t: InstructionName) {
   return instructions[t].opcode;
 }
 
 export const instructionsByOpcode = Object.fromEntries(
   Object.values(instructions).map(i => [i.opcode, i]),
 ) as Record<number, InstructionImpl>;
+
+export const nameFromOpcode = Object.fromEntries(
+  Object.entries(instructions).map(([name, i]) => [i.opcode, name]),
+) as Record<number, InstructionName>;

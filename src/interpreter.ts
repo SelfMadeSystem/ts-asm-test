@@ -1,5 +1,5 @@
 import type { Environment } from './environment';
-import { instructionsByOpcode } from './instructions';
+import { instructionsByOpcode, nameFromOpcode } from './instructions';
 
 export class Interpreter {
   constructor(private env: Environment) {}
@@ -18,7 +18,6 @@ export class Interpreter {
         operands.push(bytecode[this.env.pc]);
         this.env.incrPc();
       }
-      console.log(opcode, operands);
 
       instruction.execute(this.env, operands);
     }
