@@ -11,11 +11,15 @@ const bytecode = parse([
   "set", 1, 42, // Set register 1 to 42 (ASCII code for '*')
   "[loop", // Label the loop
   "subv", 0, 0, 1, // Subtract 1 from register 0
-  "asciir", 1, // Output '*'
-  "asciiv", 32, // Output space (ASCII code 32)
+  ")print", // Call the print function
   "cmpv", 0, 0, // Compare register 0 to 0
   "]loop:jnz", // Jump to loop if comparison was not zero
-  "flush"
+  "flush",
+  "halt",
+  "(print", // Label the print function
+  "asciiv", 32, // Output ' '
+  "asciiv", 42, // Output '*'
+  "ret",
 ]);
 
 itp.run(bytecode);

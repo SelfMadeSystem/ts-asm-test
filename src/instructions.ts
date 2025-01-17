@@ -124,6 +124,8 @@ export const instructions = {
   asciir: ni(1, (env, [r]) => env.log(env.getRegister(r))),
   asciia: ni(1, (env, [a]) => env.log(env.read(env.getRegister(a)))),
   flush: ni(0, env => env.flush()),
+  // System instructions
+  halt: ni(0, env => env.halt()),
 } as const;
 
 export type InstructionName = keyof typeof instructions;

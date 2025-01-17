@@ -29,11 +29,11 @@ export class Environment {
   public push(value: number): void {
     const stack = this.pointers.stack;
     this.memory.write(stack, value);
-    this.pointers.stack ++;
+    this.pointers.stack++;
   }
 
   public pop(): number {
-    this.pointers.stack --;
+    this.pointers.stack--;
     return this.memory.read(this.pointers.stack);
   }
 
@@ -68,5 +68,9 @@ export class Environment {
   public flush(): void {
     console.log(this.stdoutBuffer.map(v => String.fromCharCode(v)).join(''));
     this.stdoutBuffer = [];
+  }
+
+  public halt(): void {
+    process.exit(0);
   }
 }
