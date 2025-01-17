@@ -14,12 +14,12 @@ const bytecode = parse([
   ")print", // Call the print function
   "cmpv", 0, 0, // Compare register 0 to 0
   "]loop:jnz", // Jump to loop if comparison was not zero
-  "flush",
-  "halt",
+  "flush", // Flush the output buffer
+  "halt", // Halt the program
   "(print", // Label the print function
   "asciiv", 32, // Output ' '
-  "asciiv", 42, // Output '*'
-  "ret",
+  "asciir", 1, // Output the value of register 1 as an ASCII character
+  "ret", // Return from the function
 ]);
 
 itp.run(bytecode);
